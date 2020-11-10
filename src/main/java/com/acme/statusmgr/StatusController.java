@@ -1,6 +1,8 @@
 package com.acme.statusmgr;
 
+import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.Collectors;
 
 import com.acme.statusmgr.beans.ServerStatus;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,9 +34,13 @@ public class StatusController {
     protected final AtomicLong counter = new AtomicLong();
 
 
-    
+
     @RequestMapping("/status")
-    public ServerStatus greeting(@RequestParam(value="name", defaultValue="Anonymous") String name) {
+    public ServerStatus serverStatusHandler(@RequestParam(value="name", defaultValue="Anonymous") String name, @RequestParam(value="details", defaultValue = "No details provided") List<String> detailsList) {
+        System.out.println("*** DEBUG INFO ***\n" + detailsList.toString());
+        //If want a comma delimited list use stream().
+        //                map(Object::toString).
+        //                collect(Collectors.joining(","))
         return new ServerStatus(counter.incrementAndGet(),
                             String.format(template, name));
     }
